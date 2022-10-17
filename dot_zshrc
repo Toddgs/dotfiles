@@ -91,6 +91,31 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
+# Functions
+export CMAKE_BUILD_TYPE=Release
+function doinit() {
+	sudo apt update && sudo apt upgrade -y
+
+	sudo apt install vim tmux ncdu htop tldr fd-find bat fzf exuberant-ctags build-essential cmake pigz unzip pkg-config ninja-build gettext libtool libtool-bin autoconf automake curl doxygen -y
+
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+	source $HOME/.cargo/env
+
+	cargo install exa procs
+	cargo install zoxide --locked
+
+	compaudit | xargs chmpd g-w,o-w
+	chsh -s $(which zsh)
+
+	git clone https://github.com/neovim/neovim.git
+	cd neovim
+	make
+	sudo make install
+	cd ~
+	rm -rf neovim
+}
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
