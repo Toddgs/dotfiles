@@ -95,7 +95,9 @@ fi
 function doinit() {
 	sudo apt update && sudo apt upgrade -y
 
-	sudo apt install vim tmux ncdu htop tldr fd-find bat fzf exuberant-ctags build-essential cmake pigz unzip pkg-config ninja-build gettext libtool libtool-bin autoconf automake curl doxygen -y
+	sudo apt install vim tmux ncdu htop tldr fd-find bat fzf exuberant-ctags build-essential cmake pigz unzip pkg-config ninja-build gettext libtool libtool-bin autoconf automake curl doxygen python3-pip -y
+
+    curl -sL install-node.now.sh/lts | sudo bash -s -- -y
 
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
@@ -114,6 +116,10 @@ function doinit() {
 	sudo make install
 	cd ~
 	rm -rf neovim
+
+    pip install pynvim
+    
+    echo "Don't forget to install language servers for CoC!"
 }
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
