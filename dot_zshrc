@@ -115,6 +115,8 @@ function doinit() {
 	make
 	sudo make install
 	cd ~
+    sudo cp ~/bin/chezmoi /usr/bin/
+    rm -rf bin
 	rm -rf neovim
 
     pip install pynvim
