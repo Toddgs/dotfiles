@@ -14,10 +14,6 @@ require('opts')      -- Options
 
 -- PLUGINS
 require('nvim-tree').setup{}
-require('lualine').setup {
-    options = {
-        theme = 'dracula-nvim'
-    }
-}
+require('lualine').setup {}
 require('nvim-autopairs').setup{}
 
