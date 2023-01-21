@@ -97,6 +97,7 @@ function doinit() {
 
 	sudo apt install vim tmux ncdu htop tldr fd-find bat fzf exuberant-ctags build-essential cmake pigz unzip pkg-config ninja-build gettext libtool libtool-bin autoconf automake curl doxygen python3-pip -y
 
+    # Pipe install node into bash and pass -y
     curl -sL install-node.now.sh/lts | sudo bash -s -- -y
 
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -108,6 +109,10 @@ function doinit() {
 
 	compaudit | xargs chmod g-w,o-w
 	chsh -s $(which zsh)
+
+    # Use sed to change chezmoi git to use SSH instead of https
+    sed -i 's/https:\/\//git@/' ~/.local/share/chezmoi/.git/config
+    sed -i 's/m\/T/m:T/' ~/.local/share/chezmoi/.git/config
 
 	export CMAKE_BUILD_TYPE=Release
 	git clone https://github.com/neovim/neovim.git
@@ -142,7 +147,6 @@ alias wttr='curl wttr.in'
 alias moon='curl wttr.in/moon'
 alias cat='batcat'
 alias gzip='pigz'
-alias ssh='xxh'
 alias vim='nvim'
 alias cd='z'
 
