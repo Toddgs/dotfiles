@@ -92,48 +92,10 @@ fi
 # export ARCHFLAGS="-arch x86_64"
 
 # Functions
-function doinit() {
-	sudo apt update && sudo apt upgrade -y
+fpath=( ~/.zfunc "${fpath[@]}" )
+autoload -Uz doinit
+autoload -Uz doupdate
 
-	sudo apt install vim tmux ncdu htop tldr fd-find bat fzf exuberant-ctags build-essential cmake pigz unzip pkg-config ninja-build gettext libtool libtool-bin autoconf automake curl doxygen python3-pip -y
-
-    # Pipe install node into bash and pass -y
-    curl -sL install-node.now.sh/lts | sudo bash -s -- -y
-
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-	source $HOME/.cargo/env
-
-	cargo install exa procs
-	cargo install zoxide --locked
-
-	compaudit | xargs chmod g-w,o-w
-	chsh -s $(which zsh)
-
-    # Use sed to change chezmoi git to use SSH instead of https
-    sed -i 's/https:\/\//git@/' ~/.local/share/chezmoi/.git/config
-    sed -i 's/m\/T/m:T/' ~/.local/share/chezmoi/.git/config
-
-	export CMAKE_BUILD_TYPE=Release
-	git clone https://github.com/neovim/neovim.git
-	cd neovim
-	make
-	sudo make install
-	cd ~
-    sudo cp ~/bin/chezmoi /usr/bin/
-    rm -rf bin
-	rm -rf neovim
-
-    pip install pynvim
-    
-    echo "Don't forget to install language servers for CoC!"
-}
-
-function doupdate()
-{
-    sudo apt update && sudo apt upgrade -y
-    rustup -q update
-}
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.

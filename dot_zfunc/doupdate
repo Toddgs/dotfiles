@@ -1,0 +1,9 @@
+# Update via apt
+sudo apt update && sudo apt upgrade -y
+
+# Update rust too!
+rustup -q update
+
+# Recompile our .zfunc functions in case we've made changes.
+rm -f ~/.zfunc/*.zwc
+for f in ~/.zfunc/*; do echo "zcompiling $f file..."; zcompile $f; done
