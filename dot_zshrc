@@ -110,9 +110,9 @@ alias moon='curl wttr.in/moon'
 alias cat='batcat'
 alias gzip='pigz'
 alias vim='nvim'
-alias cd='z'
+alias grep='rg'
 
-eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh --cmd cd)"
 
 if [ "$TMUX" = "" ]; then
 	tmux new-session \; split-window -h \; split-window -v \; select-layout main-vertical;

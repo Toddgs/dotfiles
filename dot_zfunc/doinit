@@ -10,8 +10,10 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 source $HOME/.cargo/env
 
-cargo install exa procs
+cargo install exa procs bottom ripgrep tealdeer
 cargo install zoxide --locked
+
+tldr -u
 
 compaudit | xargs chmod g-w,o-w
 chsh -s $(which zsh)
