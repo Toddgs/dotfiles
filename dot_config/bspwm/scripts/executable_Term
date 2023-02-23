@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Script to manage the terminal, stolen shamelessly from 
+# z0mbi3 @ url: https://github.com/gh0stzk
+
+if [[ "$1" == "--ot" ]]; then
+	alacritty
+elif [[ "$1" == "--oft" ]]; then
+	alacritty -t floaterm
+elif [[ "$1" == "--ou" ]]; then
+	alacritty --hold -t updating -e sudo apt update
+elif [[ "$1" == "--ocu" ]]; then
+	alacritty --hold -t updating -e sudo apt update && sudo apt upgrade -y
+elif [[ "$1" == "--or" ]]; then
+	alacritty -t ranger -e ranger
+elif [[ "$1" == "--ov" ]]; then
+	alacritty -e nvim
+elif [[ "$1" == "--om" ]]; then
+	alacritty -t musicplayer -e ncmpcpp
+elif [[ "$1" == "--of" ]]; then
+	alacritty --hold -t sysfetch -e ~/.local/bin/sysfetch
+fi
+

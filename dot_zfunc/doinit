@@ -79,7 +79,7 @@ wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/in
 
 # Use sed to change chezmoi git to use SSH instead of https
 sed -i 's/https:\/\//git@/' ~/.local/share/chezmoi/.git/config
-sed -i 's/m\/T/m:T/' ~/.local/share/chezmoi/.git/config
+sed -i 's/m\/t/m:t/' ~/.local/share/chezmoi/.git/config
 
 # Move chezmoi into a more accesible place.
 sudo cp ~/bin/chezmoi /usr/bin/

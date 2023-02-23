@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+# Author 	 -  z0mbi3
+# Source 	 -  https://github.com/gh0stzk/dotfiles
+# Maintainer -  z0mbi3.zk@protonmail.com
+
+cfg_file="$HOME/.config/bspwm/rice.cfg"
+rofi_command="rofi -theme $HOME/.config/bspwm/scripts/RiceSelector.rasi"
+
+# Options
+tokyo_night="󰔿 Tokyo Night"
+cyberpunk="󰔿 Cyberpunk"
+pencil_light="󰔿 Pencil Light"
+onedark="󰔿 Onedark"
+win_light="󰔿 Win Light"
+mono_dark="󰔿 Mono Dark"
+gruvbox="󰔿 Gruvbox"
+nord="󰔿 Nord"
+elenapan="󰔿 Elenapan"
+rose_pine_moon="󰔿 Rose-Pine Moon"
+too_light="󰔿 Too Light"
+z0mbi3="󰔿 z0mbi3"
+
+options="$tokyo_night\n$cyberpunk\n$pencil_light\n$onedark\n$win_light\n$mono_dark\n$gruvbox\n$nord\n$elenapan\n$rose_pine_moon\n$too_light\n$z0mbi3"
+chosen="$(printf "$options" | $rofi_command -dmenu)"
+	case $chosen in
+
+			$tokyo_night)
+				cat <<< "tokyo_night" > ${cfg_file}
+				bspc wm -r
+				;;
+			$cyberpunk)
+				cat <<< "cyberpunk" > ${cfg_file}
+				bspc wm -r
+				;;
+			$pencil_light)
+				cat <<< "pencil_light" > ${cfg_file}
+				bspc wm -r
+				;;
+			$onedark)
+				cat <<< "onedark" > ${cfg_file}
+				bspc wm -r
+				;;
+			$win_light)
+				cat <<< "win_light" > ${cfg_file}
+				bspc wm -r
+				;;
+			$mono_dark)
+				cat <<< "mono_dark" > ${cfg_file}
+				bspc wm -r
+				;;
+			$gruvbox)
+				cat <<< "gruvbox" > ${cfg_file}
+				bspc wm -r
+				;;
+			$nord)
+				cat <<< "nord" > ${cfg_file}
+				bspc wm -r
+				;;
+			$elenapan)
+				cat <<< "elenapan" > ${cfg_file}
+				bspc wm -r
+				;;
+			$rose_pine_moon)
+				cat <<< "rose_pine_moon" > ${cfg_file}
+				bspc wm -r
+				;;
+			$too_light)
+				cat <<< "too_light" > ${cfg_file}
+				bspc wm -r
+				;;
+			$z0mbi3)
+				cat <<< "z0mbi3" > ${cfg_file}
+				bspc wm -r
+				;;				
+		esac
+	
