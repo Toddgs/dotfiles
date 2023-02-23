@@ -1,7 +1,27 @@
 
 sudo apt update && sudo apt upgrade -y
 
-sudo apt install vim tmux ncdu htop tldr fd-find bat fzf exuberant-ctags build-essential cmake pigz unzip pkg-config ninja-build gettext libtool libtool-bin autoconf automake curl doxygen python3-pip -y
+sudo apt install \
+ncdu htop tldr fd-find bat fzf exuberant-ctags \
+build-essential cmake pigz unzip pkg-config ninja-build gettext \
+libtool libtool-bin autoconf automake curl doxygen \
+bspwm sxhkd picom thunar rofi eww feh ranger physlock \
+maim imagemagick \
+papirus-icon-theme \
+mpd mpc ncmpcpp \
+python3-pip python3-sphinx python3-packaging python3-xcbgen \
+clangd \
+webp-pixbuf-loader xcb-proto \
+libnotify-dev libuv1-dev libcairo2-dev libxcb1-dev libxcb-util0-dev \
+libxcb-randr0-dev libxcb-composite0-dev libxcb-image0-dev libxcb-ewmh-dev \
+libxcb-icccm4-dev libxcb-xkb-dev libxcb-cursor-dev libasound2-dev libpulse-dev \
+libjsoncpp-dev libmpdclient-dev libcurl4-openssl-dev libnl-genl-3-dev \
+libjpeg-dev libxkbcommon-dev libxcb-xrm-dev libxcb-xinerama0-dev libx11-xcb-dev \
+libev-dev libfontconfig1-dev libpam0g-dev \
+-y
+
+# Change shell to ZSH
+chsh -s $(which zsh)
 
 # Pipe install node into bash and pass -y
 curl -sL install-node.now.sh/lts | sudo bash -s -- -y
@@ -10,33 +30,70 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 source $HOME/.cargo/env
 
-cargo install exa procs bottom ripgrep tealdeer
+cargo install exa procs bottom ripgrep tealdeer alacritty
 cargo install zoxide --locked
 
-tldr -u
+# Clone, build, and install eww
+git clone https://github.com/elkowar/eww
+cd eww
+cargo build --release
+sudo cp ~/eww/target/release/eww /usr/bin/
+cd
 
-compaudit | xargs chmod g-w,o-w
-chsh -s $(which zsh)
-
-# Use sed to change chezmoi git to use SSH instead of https
-sed -i 's/https:\/\//git@/' ~/.local/share/chezmoi/.git/config
-sed -i 's/m\/T/m:T/' ~/.local/share/chezmoi/.git/config
-
-# Use zcompile to compile the function files for small speed gain.
-# .zshrc SHOULD automatically pick the newest file
-zcompile ~/.zfunc/doinit
-zcompile ~/.zfunc/doupdate
-
+# Clone Neovim, INSTALL IT!
 export CMAKE_BUILD_TYPE=Release
 git clone https://github.com/neovim/neovim.git
 cd neovim
 make
 sudo make install
-cd ~
+cd
+
+# Clone Dunst, make, and install
+git clone https://github.com/dunst-project/dunst.git
+cd dunst
+make
+sudo make install
+cd
+
+# Clone polybar, build and install
+git clone --recursive https://github.com/polybar/polybar
+cd polybar
+mkdir build
+cd build
+cmake ..
+make -j$(nproc)
+sudo make install
+
+# Clone i3lock color, build, and install
+git clone https://github.com/Raymo111/i3lock-color.git
+cd i3lock-color
+./install-i3lock-color.sh
+cd
+
+tldr -u
+
+# Install betterlockscreen
+wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
+
+# Run neovim in headless mode to update and compile packer, and add Coc languages
+
+# Use sed to change chezmoi git to use SSH instead of https
+sed -i 's/https:\/\//git@/' ~/.local/share/chezmoi/.git/config
+sed -i 's/m\/T/m:T/' ~/.local/share/chezmoi/.git/config
+
+# Move chezmoi into a more accesible place.
 sudo cp ~/bin/chezmoi /usr/bin/
-rm -rf bin
-rm -rf neovim
 
 pip install pynvim
 
-echo "Don't forget to install language servers for CoC!"
+doupdate
+
+# Cleanup
+rm -rf ~/bin
+rm -rf ~/neovim
+rm -rf ~/eww
+rm -rf ~/dunst
+rm -rf ~/polybar
+rm -rf ~/i3lock-color
+
+echo "Don't forget to install language servers for CoC and run Packer!"

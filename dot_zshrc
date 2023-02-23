@@ -61,6 +61,7 @@ ZSH_THEME="agnoster"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
+HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -95,6 +96,7 @@ fi
 fpath=( ~/.zfunc "${fpath[@]}" )
 autoload -Uz doinit
 autoload -Uz doupdate
+autoload -Uz extract
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -114,9 +116,9 @@ alias grep='rg'
 
 eval "$(zoxide init zsh --cmd cd)"
 
-if [ "$TMUX" = "" ]; then
-	tmux new-session \; split-window -h \; split-window -v \; select-layout main-vertical;
-fi
+# if [ "$TMUX" = "" ]; then
+# 	tmux new-session \; split-window -h \; split-window -v \; select-layout main-vertical;
+# fi
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
