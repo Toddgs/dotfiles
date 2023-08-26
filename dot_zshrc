@@ -110,6 +110,7 @@ autoload -Uz extract
 alias wttr='curl wttr.in'
 alias moon='curl wttr.in/moon'
 alias cat='batcat'
+alias oldcat='/bin/cat'
 alias gzip='pigz'
 alias vim='nvim'
 alias grep='rg'
