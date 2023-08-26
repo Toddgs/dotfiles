@@ -71,7 +71,7 @@ HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git common-aliases colored-man-pages safe-paste zsh-aliases-exa tmux fzf) 
+plugins=(git common-aliases colored-man-pages safe-paste zsh-aliases-exa fzf) 
 
 source $ZSH/oh-my-zsh.sh
 

@@ -5,7 +5,7 @@ sudo apt install \
 ncdu htop tldr fd-find bat fzf exuberant-ctags \
 build-essential cmake pigz unzip pkg-config ninja-build gettext \
 libtool libtool-bin autoconf automake curl doxygen \
-bspwm sxhkd picom thunar rofi eww feh ranger physlock \
+bspwm sxhkd picom thunar rofi feh ranger physlock \
 maim imagemagick \
 papirus-icon-theme \
 mpd mpc ncmpcpp \
