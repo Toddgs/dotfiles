@@ -1,10 +1,12 @@
 ncdu
+ansible
+vivaldi-stable
 htop
 tldr
 fd-find
 bat
 fzf
-exuberant-ctags
+universal-ctags
 build-essential
 cmake
 pigz

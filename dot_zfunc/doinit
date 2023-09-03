@@ -23,10 +23,17 @@ setup() {
     printf "\n\n%s\n\n" "${MAGENTA}${BRIGHT}Getting Started${NORMAL}"
     # Make temp scratch dir
     scratch=$(mktemp -d -t tmp.XXXXXXXXXX)
-    doupdate
 
+    sudo apt-add-repository ppa:ansible/ansible
+
+    # Install Vivaldi browser
+    wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | gpg --dearmor | sudo dd of=/usr/share/keyrings/vivaldi-browser.gpg
+    echo "deb [signed-by=/usr/share/keyrings/vivaldi-browser.gpg arch=$(dpkg --print-architecture)] https://repo.vivaldi.com/archive/deb/ stable main" | sudo dd of=/etc/apt/sources.list.d/vivaldi-archive.list
+   
     # Change shell to ZSH
     chsh -s $(which zsh)
+    
+    doupdate
 }
 
 # Install needed packages via apt
@@ -44,8 +51,8 @@ git_setup() {
     git config --global user.name "${git_user}"
 }
 
-install_programming_langauges() {
-    printf "\n\n%s\n\n" "${MAGENTA}${BRIGHT}Installing programming langauges${NORMAL}"
+install_programming_languages() {
+    printf "\n\n%s\n\n" "${MAGENTA}${BRIGHT}Installing programming languages${NORMAL}"
 
     # Rust
     printf "${BLUE}Installing Rust\n${NORMAL}"
@@ -121,8 +128,11 @@ weird_installs() {
     https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh \
     -O - -q | sudo bash -s system
 
-    cd
+    wget https://github.com/obsidianmd/obsidian-releases/releases/download/v1.4.5/obsidian_1.4.5_amd64.deb
+    dpkg -i obsidian_1.4.5_amd64.deb
 
+    cd
+    
 }
 
 final_setup() {
@@ -137,8 +147,18 @@ final_setup() {
     tldr --update
 
     pip install pynvim
+    pip install -U jedi-language-server
 
-    # Run neovim in headless mode to update and compile packer, and add Coc languages
+    # Run neovim commands headless
+    # `-c` indicates a command run after initial config is loaded
+    # The `|q` quits after running the commands
+    local coc_install_list='coc-sh coc-yaml coc-jedi coc-docker \
+    @yaegassy/coc-ansible coc-rust-analyzer coc-groovy coc-clangd' 
+    vim -c 'PackerInstall|q'
+    vim -c 'CocInstall ${coc_install_list}|q'
+
+    printf "\n\n%s\n" "${RED}${BRIGHT}Run PackerInstall in Neovim${NORMAL}"
+    printf "\n\n%s\n\n" "${RED}${BRIGHT}${NORMAL}"
 }
 
 # Cleanup
@@ -146,12 +166,11 @@ finish() {
     rm --recursive --force ${scratch}
 }
 
-#echo "Don't forget to install language servers for CoC and run Packer!"
 # NEW SCRIPT START HERE
 setup
 apt_install
 git_setup
-install_programming_langauges
+install_programming_languages
 cargo_install
 
 make_install_source

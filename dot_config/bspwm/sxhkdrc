@@ -17,9 +17,10 @@ super + alt + t
 	Term --st
 	
 # Apps
-shift + alt + {b,n,p,r,q,v,k}
-       {firefox, \
+shift + alt + {b,n,o,p,r,q,v,k}
+       {vivaldi, \
         thunar, \
+        obsidian, \
         pavucontrol, \
         Term --or, \
         qutebrowser --qt-flag disable-gpu, \
@@ -60,7 +61,7 @@ alt + space
 
 # Reload sxhkd
 super + Escape
-	pkill -USR1 -x sxhkd; notify-send 'sxhkd' 'Updating sxhkd keybinds...'
+	    {pkill -USR1 -x sxhkd; notify-send 'sxhkd' 'Updating sxhkd keybinds...'}
 	
 # Random wallpaper
 super + alt + w

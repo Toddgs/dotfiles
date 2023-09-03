@@ -45,7 +45,6 @@ return require('packer').startup(function(use)
 	use { 'tpope/vim-fugitive' }
 	use { 'junegunn/gv.vim' }
 	use { 'windwp/nvim-autopairs' }
-	use { 'vimwiki/vimwiki' }
 	use {
 		'kdheepak/tabline.nvim',
 		config = function()
