@@ -14,6 +14,8 @@ require('opts')      -- Options
 
 -- PLUGINS
 require('nvim-tree').setup{}
-require('lualine').setup {}
+require('lualine').setup{}
 require('nvim-autopairs').setup{}
+require('hardtime').setup{}
+require('range-highlight').setup{}
 

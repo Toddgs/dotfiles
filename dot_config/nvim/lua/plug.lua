@@ -40,6 +40,14 @@ return require('packer').startup(function(use)
 		'nvim-telescope/telescope.nvim',
 		requires = { {'nvim-lua/plenary.nvim'} }
 	}
+    use {
+        'winston0410/range-highlight.nvim',
+        requires = { 'winston0410/cmd-parser.nvim' }
+    }
+	use {
+	   "m4xshen/hardtime.nvim",
+	   requires = { 'MunifTanjim/nui.nvim', "nvim-lua/plenary.nvim" }
+	}
 	use { 'majutsushi/tagbar' }
 	use { 'Yggdroot/indentLine' }
 	use { 'tpope/vim-fugitive' }

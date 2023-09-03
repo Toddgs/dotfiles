@@ -1,4 +1,5 @@
 ncdu
+python3-venv
 ansible
 vivaldi-stable
 htop
