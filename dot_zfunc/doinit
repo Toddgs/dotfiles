@@ -39,7 +39,7 @@ setup() {
 # Install needed packages via apt
 apt_install() {
     printf "\n\n%s\n\n" "${MAGENTA}${BRIGHT}Installing required packages and libraries${NORMAL}"
-    sudo apt install --ignore-missing $(< ${HOME}/.config/packages.list) -y
+    sudo apt install --ignore-missing $(< ${HOME}/.config/install-lists/packages.list) -y
 }
 
 git_setup() {
@@ -67,7 +67,7 @@ install_programming_languages() {
 
 cargo_install() {
     printf "\n\n%s\n\n" "${MAGENTA}${BRIGHT}Installing cool stuff via Cargo${NORMAL}"
-    cargo install $(< ${HOME}/.config/cargo.list)
+    cargo install $(< ${HOME}/.config/install-lists/cargo.list)
 }
 
 git_clone() {
@@ -84,7 +84,7 @@ make_install_source() {
         git_clone
         make --directory=${scratch}/${git_repo_dir}
         sudo make --directory=${scratch}/${git_repo_dir} install
-    done < ${HOME}/.config/make.list
+    done < ${HOME}/.config/install-lists/make.list
 }
 
 cargo_build_source() {
@@ -96,7 +96,7 @@ cargo_build_source() {
         cd ${scratch}/${git_repo_dir}
         cargo build --release
         sudo cp ${scratch}/${git_repo_dir}/target/release/${git_repo_dir} /usr/bin/
-    done < ${HOME}/.config/cargo_build.list
+    done < ${HOME}/.config/install-lists/cargo_build.list
 }
 
 cmake_install_source() {
@@ -110,7 +110,7 @@ cmake_install_source() {
         cmake ..
         make
         sudo make install
-    done < ${HOME}/.config/cmake_build.list
+    done < ${HOME}/.config/install-lists/cmake_build.list
 }
 
 weird_installs() {
