@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-#    ____ ____  ______        ____  __ 
+#    ____ ____  ______        ____  __
 #   | __ ) ___||  _ \ \      / /  \/  |  - z0mbi3
 #   |  _ \___ \| |_) \ \ /\ / /| |\/| |  - https://github.com/gh0stzk/dotfiles
 #   | |_) |__) |  __/ \ V  V / | |  | |  - z0mbi3.zk@protonmail.com
 #   |____/____/|_|     \_/\_/  |_|  |_|
 #                                    z0mbi3 config..
-
 
 ########### Def vars
 
@@ -23,33 +22,33 @@ BSPWM_GAP='10'
 ########### Functions
 
 function launch() {
-  local running
-  running="$(pgrep -x "$1")"
-  [ "$running" ] && kill -9 $(pgrep -x $1) 2> /dev/null
-  eval "$* &"
+	local running
+	running="$(pgrep -x "$1")"
+	[ "$running" ] && kill -9 $(pgrep -x $1) 2>/dev/null
+	eval "$* &"
 }
 
 function killeww() {
-  if [[ `pidof eww` ]]; then 
+	if [[ $(pidof eww) ]]; then
 		pkill eww
-  fi
+	fi
 }
 
 function ReloadTerms() {
-	
-	cat $HOME/.config/bspwm/rices/$RICETHEME/alacrittyrc > $HOME/.config/alacritty/alacritty.yml
-	
-	cat $HOME/.config/bspwm/rices/$RICETHEME/termiterc > $HOME/.config/termite/config
-		if [[ `pidof termite` ]]; then 
-			killall -USR1 termite
-		fi
+
+	cat $HOME/.config/bspwm/rices/$RICETHEME/alacrittyrc >$HOME/.config/alacritty/alacritty.yml
+
+	cat $HOME/.config/bspwm/rices/$RICETHEME/termiterc >$HOME/.config/termite/config
+	if [[ $(pidof termite) ]]; then
+		killall -USR1 termite
+	fi
 }
 
 function SetBspwmConf() {
 	bspc config border_width "$BSPWM_BORDER"
 	bspc config top_padding "$2"
 	bspc config bottom_padding "$3"
-	bspc config normal_border_color "$4" 
+	bspc config normal_border_color "$4"
 	bspc config active_border_color "$5"
 	bspc config focused_border_color "$6"
 	bspc config presel_feedback_color "$7"
@@ -62,194 +61,244 @@ function SetBspwmConf() {
 
 workspaces() {
 	name=1
-	for monitor in `bspc query -M`; do
+	for monitor in $(bspc query -M); do
 		bspc monitor ${monitor} -n "$name" -d '1' '2' '3' '4' '5' '6'
 		#bspc monitor ${monitor} -n "$name" -d '' '' '' '' '' ''
 		let name++
 	done
 }
 
+### Manage Monitors and Workspaces
+###
+### Default Setup (Set 8 workspaces on each monitor)
+#default_workspaces() {
+#	for monitor in $(xrandr -q | grep -w 'connected' | cut -d' ' -f1); do
+#		bspc monitor "$monitor" -d '' '' '' '' '' '' '' ''
+#	done
+#}
+#
+### Two Monitors Setup (Laptop and external monitor, set 4 workspaces on each monitor)
+#two_monitors_workspaces() {
+#	# change these values according to your system
+#	# you can use `xrandr -q` to get the names of monitors
+#	INTERNAL_MONITOR="eDP"
+#	EXTERNAL_MONITOR="DP-4-1"
+#	#if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
+#	bspc monitor "$EXTERNAL_MONITOR" -d '1' '2' '3' '4'
+#	bspc monitor "$INTERNAL_MONITOR" -d '5' '6' '7' '8'
+#	#bspc monitor "$EXTERNAL_MONITOR" -d '' '' '' ''
+#	#bspc monitor "$INTERNAL_MONITOR" -d '' '' '' ''
+#	bspc wm -O "$EXTERNAL_MONITOR" "$INTERNAL_MONITOR"
+#	#else
+#	#	bspc monitor "$INTERNAL_MONITOR" -d '' '' '' '' '' '' '' ''
+#	#fi
+#}
+#
+### Three Monitors Setup (Laptop and two external monitor, 3-2-3 workspaces)
+#three_monitors_workspaces() {
+#	# again, change these values accordingly
+#	MONITOR_1="eDP"
+#	MONITOR_2="DP-4-1"
+#	MONITOR_3="DP-4-2"
+#	bspc monitor "$MONITOR_1" -d '1' '2'
+#	bspc monitor "$MONITOR_2" -d '3' '4' '5'
+#	bspc monitor "$MONITOR_3" -d '6' '7' '8'
+#	#bspc monitor "$MONITOR_1" -d '' ''
+#	#bspc monitor "$MONITOR_2" -d '' '' ''
+#	#bspc monitor "$MONITOR_3" -d '' '' ''
+#	bspc wm -O "$MONITOR_2" "$MONITOR_1" "$MONITOR_3"
+#}
+#
+## Determine number of needed monitors automatically
+#if [ $(xrandr -q | grep -w connected | wc -l) -eq "3" ]; then
+#	three_monitors_workspaces
+#elif [ $(xrandr -q | grep -w connected | wc -l) -eq "2" ]; then
+#	two_monitors_workspaces
+#else
+#	default_workspaces
+#fi
+
 workspaces
 
 ########### Launch The Rice!!
 
 case $RICETHEME in
-	
-		tokyo_night)
-		
-		  SetBspwmConf "$BSPWM_BORDER" 60 5 "#414868" "#c0caf5" "#bb9af7" "#7aa2f7" 5 5 "$BSPWM_GAP"
-		  		  
-		  killeww
-		  launch polybar -q emi-bar -c ${polydir}/config.ini
-		  launch dunst -config ${bspdir}/dunstrc-dark 
-          launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
-		  
-		  ;;
-			
-		cyberpunk)
-		
-		  SetBspwmConf "$BSPWM_BORDER" 60 5 "#4C3A6D" "#4C3A6D" "#785DA5" "#070219" 5 5 "$BSPWM_GAP"
-		  
-		  killeww
-		  launch polybar -q main -c ${polydir}/config.ini
-		  launch dunst -config ${bspdir}/dunstrc-dark
-          launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
-		  
-		  ;;
-		    
-		pencil_light)
-		
-		  SetBspwmConf "$BSPWM_BORDER" 55 5 "#ca9ee6" "#ca9ee6" "#8CAAEE" "#E78284" 5 5 "$BSPWM_GAP"
-		  
-		  killeww
-		  launch polybar -q pencil_light-bar -c ${polydir}/config.ini
-		  launch dunst -config ${bspdir}/dunstrc-light
-          launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
-		  
-		  ;;
-		  
-		onedark)
-		
-		  SetBspwmConf "$BSPWM_BORDER" 5 45 "#b8bfe5" "#b8bfe5" "#7560d3" "#81ae5f" 5 5 "$BSPWM_GAP" 
-		  
-		  killeww
-		  launch polybar -q isa-bar -c ${polydir}/config.ini
-		  launch dunst -config ${bspdir}/dunstrc-dark
-          launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
-		  
-		  ;;
-		  
-		mono_dark)
-		
-		  SetBspwmConf "$BSPWM_BORDER" 50 50 "#543f66" "#543f66" "#465b80" "#3f5273" 5 5 "$BSPWM_GAP"
-		  
-		  killeww
-		  launch polybar -q cyn-bar -c ${polydir}/config.ini
-		  polybar -q cyn-bar2 -c ${polydir}/config.ini &
-		  launch dunst -config ${bspdir}/dunstrc-dark
-          launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
-		  
-		  ;;
-		  
-		gruvbox)
-		
-		  SetBspwmConf "$BSPWM_BORDER" 50 5 "#d3869b" "#d3869b" "#fbf1c7" "#b8bb26" 5 5 "$BSPWM_GAP"
 
-		  killeww
-		  launch polybar -q cata-bar -c ${polydir}/config.ini
-		  launch dunst -config ${bspdir}/dunstrc-dark
-          launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
-		  
-		  ;;
-		
-		nord)
-		
-		  SetBspwmConf "$BSPWM_BORDER" 42 40 "#e5e9f0" "#e5e9f0" "#4c566a" "#bf616a" 5 5 "$BSPWM_GAP"
+tokyo_night)
 
-		  killeww
-		  launch polybar -q mel-bar -c ${polydir}/config.ini
-		  polybar -q mel2-bar -c ${polydir}/config.ini &
-		  launch dunst -config ${bspdir}/dunstrc-dark 
-          launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
-		  
-		  ;;
-		  
-		elenapan)
-		
-		  SetBspwmConf "$BSPWM_BORDER" 60 5 "#C574DD" "#C574DD" "#8897F4" "#FF4971" 5 5 "$BSPWM_GAP"
-		  
-		  killeww
-		  launch polybar -q pam1 -c ${polydir}/config.ini
-		  polybar -q pam2 -c ${polydir}/config.ini &
-		  polybar -q pam3 -c ${polydir}/config.ini &
-		  polybar -q pam4 -c ${polydir}/config.ini &
-		  polybar -q pam5 -c ${polydir}/config.ini &
-		  polybar -q pam6 -c ${polydir}/config.ini &
-		  launch dunst -config ${bspdir}/dunstrc-dark
-          launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
-		  
-		  ;;
-		  
-		rose_pine_moon)
-		
-		  SetBspwmConf "$BSPWM_BORDER" 10 60 "#9bced7" "#9bced7" "#c3a5e6" "#c3a5e6" 5 5 "$BSPWM_GAP"
-		  
-		  killeww
-		  launch polybar -q rose_pine_moon-bar -c ${polydir}/config.ini
-		  launch dunst -config ${bspdir}/dunstrc-dark
-          launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
-		  
-		  ;;
-		  
-		z0mbi3)
-		
-		  SetBspwmConf "$BSPWM_BORDER" 5 5 "#3d414f" "#3d414f" "#3d414f" "#90ceaa" 80 5 "$BSPWM_GAP"
-		  
-		  # Kill any running instances of bspc to prevent multiple
-		  # instances of "workspaces" script in eww rices to run at once
-		  killall -9 picom bspc
-		  
-		  launch eww -c $HOME/.config/bspwm/rices/z0mbi3/bar open bar
-		  launch polybar -q tray -c ~/.config/bspwm/rices/z0mbi3/bar/polybar_tray.ini
-		  launch dunst -config ${bspdir}/dunstrc-dark
-          launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
-		  
-		  ;;
-		  
-		  too_light)
-		
-		  SetBspwmConf "$BSPWM_BORDER" 65 5 "#ff004a" "#ff004a" "#0864f1" "#b93fe0" 5 5 "$BSPWM_GAP"
-		 
-		  kill -9 picom
-		  launch eww -c $HOME/.config/bspwm/rices/too_light/bar open bar
-		  launch polybar -q too_light-bar -c ${polydir}/config.ini
-		  polybar -q too_light-bar2 -c ${polydir}/config.ini &
-		  launch dunst -config ${bspdir}/dunstrc-light
-          launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
-		  
-		  ;;
-		  
-		win_light)
-		
-		  SetBspwmConf "$BSPWM_BORDER" 60 5 "#161616" "#161616" "#605692" "#67d4f1" 5 5 "$BSPWM_GAP"
-		  
-		  killall -9 picom polybar
-		  launch dunst -config ${bspdir}/dunstrc-light
-		  launch eww -c $HOME/.config/bspwm/rices/$RICETHEME/arin --restart open-many \
-		   search \
-		   apps \
-		   weather \
-		   music \
-		   system
-          launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
-		  
-		  ;;
-		  
-	esac
+	SetBspwmConf "$BSPWM_BORDER" 60 5 "#414868" "#c0caf5" "#bb9af7" "#7aa2f7" 5 5 "$BSPWM_GAP"
+
+	killeww
+	launch polybar -q emi-bar -c ${polydir}/config.ini
+	launch dunst -config ${bspdir}/dunstrc-dark
+	launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
+
+	;;
+
+cyberpunk)
+
+	SetBspwmConf "$BSPWM_BORDER" 60 5 "#4C3A6D" "#4C3A6D" "#785DA5" "#070219" 5 5 "$BSPWM_GAP"
+
+	killeww
+	launch polybar -q main -c ${polydir}/config.ini
+	launch dunst -config ${bspdir}/dunstrc-dark
+	launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
+
+	;;
+
+pencil_light)
+
+	SetBspwmConf "$BSPWM_BORDER" 55 5 "#ca9ee6" "#ca9ee6" "#8CAAEE" "#E78284" 5 5 "$BSPWM_GAP"
+
+	killeww
+	launch polybar -q pencil_light-bar -c ${polydir}/config.ini
+	launch dunst -config ${bspdir}/dunstrc-light
+	launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
+
+	;;
+
+onedark)
+
+	SetBspwmConf "$BSPWM_BORDER" 5 45 "#b8bfe5" "#b8bfe5" "#7560d3" "#81ae5f" 5 5 "$BSPWM_GAP"
+
+	killeww
+	launch polybar -q isa-bar -c ${polydir}/config.ini
+	launch dunst -config ${bspdir}/dunstrc-dark
+	launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
+
+	;;
+
+mono_dark)
+
+	SetBspwmConf "$BSPWM_BORDER" 50 50 "#543f66" "#543f66" "#465b80" "#3f5273" 5 5 "$BSPWM_GAP"
+
+	killeww
+	launch polybar -q cyn-bar -c ${polydir}/config.ini
+	polybar -q cyn-bar2 -c ${polydir}/config.ini &
+	launch dunst -config ${bspdir}/dunstrc-dark
+	launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
+
+	;;
+
+gruvbox)
+
+	SetBspwmConf "$BSPWM_BORDER" 50 5 "#d3869b" "#d3869b" "#fbf1c7" "#b8bb26" 5 5 "$BSPWM_GAP"
+
+	killeww
+	launch polybar -q cata-bar -c ${polydir}/config.ini
+	launch dunst -config ${bspdir}/dunstrc-dark
+	launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
+
+	;;
+
+nord)
+
+	SetBspwmConf "$BSPWM_BORDER" 42 40 "#e5e9f0" "#e5e9f0" "#4c566a" "#bf616a" 5 5 "$BSPWM_GAP"
+
+	killeww
+	launch polybar -q mel-bar -c ${polydir}/config.ini
+	polybar -q mel2-bar -c ${polydir}/config.ini &
+	launch dunst -config ${bspdir}/dunstrc-dark
+	launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
+
+	;;
+
+elenapan)
+
+	SetBspwmConf "$BSPWM_BORDER" 60 5 "#C574DD" "#C574DD" "#8897F4" "#FF4971" 5 5 "$BSPWM_GAP"
+
+	killeww
+	launch polybar -q pam1 -c ${polydir}/config.ini
+	polybar -q pam2 -c ${polydir}/config.ini &
+	polybar -q pam3 -c ${polydir}/config.ini &
+	polybar -q pam4 -c ${polydir}/config.ini &
+	polybar -q pam5 -c ${polydir}/config.ini &
+	polybar -q pam6 -c ${polydir}/config.ini &
+	launch dunst -config ${bspdir}/dunstrc-dark
+	launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
+
+	;;
+
+rose_pine_moon)
+
+	SetBspwmConf "$BSPWM_BORDER" 10 60 "#9bced7" "#9bced7" "#c3a5e6" "#c3a5e6" 5 5 "$BSPWM_GAP"
+
+	killeww
+	launch polybar -q rose_pine_moon-bar -c ${polydir}/config.ini
+	launch dunst -config ${bspdir}/dunstrc-dark
+	launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
+
+	;;
+
+z0mbi3)
+
+	SetBspwmConf "$BSPWM_BORDER" 5 5 "#3d414f" "#3d414f" "#3d414f" "#90ceaa" 80 5 "$BSPWM_GAP"
+
+	# Kill any running instances of bspc to prevent multiple
+	# instances of "workspaces" script in eww rices to run at once
+	killall -9 picom bspc
+
+	launch eww -c $HOME/.config/bspwm/rices/z0mbi3/bar open bar
+	launch polybar -q tray -c ~/.config/bspwm/rices/z0mbi3/bar/polybar_tray.ini
+	launch dunst -config ${bspdir}/dunstrc-dark
+	launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
+
+	;;
+
+too_light)
+
+	SetBspwmConf "$BSPWM_BORDER" 65 5 "#ff004a" "#ff004a" "#0864f1" "#b93fe0" 5 5 "$BSPWM_GAP"
+
+	kill -9 picom
+	launch eww -c $HOME/.config/bspwm/rices/too_light/bar open bar
+	launch polybar -q too_light-bar -c ${polydir}/config.ini
+	polybar -q too_light-bar2 -c ${polydir}/config.ini &
+	launch dunst -config ${bspdir}/dunstrc-light
+	launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
+
+	;;
+
+win_light)
+
+	SetBspwmConf "$BSPWM_BORDER" 60 5 "#161616" "#161616" "#605692" "#67d4f1" 5 5 "$BSPWM_GAP"
+
+	killall -9 picom polybar
+	launch dunst -config ${bspdir}/dunstrc-light
+	launch eww -c $HOME/.config/bspwm/rices/$RICETHEME/arin --restart open-many \
+		search \
+		apps \
+		weather \
+		music \
+		system
+	launch betterlockscreen -u $HOME/.config/bspwm/rices/$RICETHEME/walls
+
+	;;
+
+esac
 
 ########### bspwm conf
 
 bspc config external_rules_command ~/.config/bspwm/scripts/ExternalRules
 
-bspc config single_monocle                true
-bspc config split_ratio                   0.5
-bspc config borderless_monocle            false
-bspc config gapless_monocle               false
-bspc config focus_follows_pointer         true
-bspc config center_pseudo_tiled			  true
+bspc config single_monocle true
+bspc config split_ratio 0.5
+bspc config borderless_monocle false
+bspc config gapless_monocle false
+bspc config focus_follows_pointer true
+bspc config center_pseudo_tiled true
 
-bspc config pointer_modifier              mod4 
-bspc config pointer_action1               move 
-bspc config pointer_action2               resize_side 
-bspc config pointer_action3               resize_corner
+bspc config pointer_modifier mod4
+bspc config pointer_action1 move
+bspc config pointer_action2 resize_side
+bspc config pointer_action3 resize_corner
 
-bspc config automatic_scheme              longest_side
-bspc config initial_polarity              second_child
+bspc config automatic_scheme longest_side
+bspc config initial_polarity second_child
 
-bspc config remove_disabled_monitors      true 
-bspc config merge_overlapping_monitors    true
+bspc config remove_disabled_monitors true
+bspc config merge_overlapping_monitors true
 
-bspc config pointer_motion_interval       16
+bspc config pointer_motion_interval 16
 
 ########## AutoStart Apps
 
@@ -257,8 +306,8 @@ ReloadTerms
 launch sxhkd -c ${bspdir}/sxhkdrc
 launch picom --config ${bspdir}/rices/$RICETHEME/picom.conf
 #launch picom --legacy-backends --config ${bspdir}/rices/$RICETHEME/picom.conf
-	
-if [[ ! `pidof polkit-gnome-authentication-agent-1` ]]; then
+
+if [[ ! $(pidof polkit-gnome-authentication-agent-1) ]]; then
 	/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 fi
 
